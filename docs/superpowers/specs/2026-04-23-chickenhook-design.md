@@ -26,6 +26,8 @@ Funny, short README explaining the problem and solution. Tone: dry humor, relata
 
 **Solution:** A chicken screaming on your roof. Literally impossible to ignore.
 
+**Value add (humorous):** Your AI works at 1000x human speed. You scroll Douyin at 0.001x. ChickenHook bridges the gap. ROI: every minute the AI waits is a minute of your life you spent watching a guy trip over a cat. The chicken will not let this happen. The chicken is your productivity. Respect the chicken.
+
 **Meme reference:** "Chicken Screaming on Tree" meme (Know Your Meme, Nov 2025).  
 Image: `https://i.kym-cdn.com/entries/icons/original/000/056/069/chickencover_.jpg`  
 Source page: https://knowyourmeme.com/memes/chicken-screaming-on-tree
