@@ -20,7 +20,9 @@ ChickenHook/
 
 Funny, short README explaining the problem and solution. Tone: dry humor, relatable dev pain.
 
-**Problem statement:** Claude Code and Coco finish tasks silently. Even with notifications configured, you're so deep in flow you don't notice. You come back 10 minutes later and the AI has been waiting idle.
+**Problem statement (two angles):**
+1. Claude/Coco finish silently. Notification appears but you're in flow — don't notice, miss it. AI sits idle waiting for next prompt.
+2. You go sleep or scroll Douyin while waiting. Lose track of time completely. Need something that physically forces you back to the keyboard.
 
 **Solution:** A chicken screaming on your roof. Literally impossible to ignore.
 
