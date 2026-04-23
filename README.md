@@ -6,27 +6,21 @@
 
 ---
 
-## The Problem
+## The Story
 
-You are a **10x AI Vibe Engineer™**. You have not written a single line of code for months. Your AI is your entire engineering team. Your job title is technically "CEO of Prompts."
+If you're anything like me, you haven't touched code in months. I'm a self-proclaimed 10x AI Vibe Engineer — I describe what I want, my AI builds it, I review, repeat. The AI is the engineering team. I'm the CEO of Prompts. It works surprisingly well, until it doesn't.
 
-And yet. The machines keep finishing without you noticing.
+The problem is the gap between when the AI finishes and when I actually notice.
 
-**Scenario A — Flow blindness:** You're deep in flow. The notification pops up quietly in the corner. You don't notice. The AI has been sitting idle for 11 minutes waiting for your next prompt. You are the bottleneck in your own one-man AI company.
+I'd fire off a prompt, then drift — check Douyin, grab water, get pulled into something else. The AI would finish in 30 seconds and just... wait. Blinking cursor. Infinite patience. And I'd come back 40 minutes later wondering why my session felt slow. The answer was always me.
 
-**Scenario B — Douyin drift:** You open Douyin "just for a sec" while waiting. 47 minutes later you surface, having watched a guy trip over a cat 6 times. Your AI finished in 30 seconds and has been staring at a blinking cursor ever since.
+I tried the built-in Mac notification sound. It's too soft. Too polite. It blends into background noise and I've trained myself to ignore it without even realising. I needed something that would cut through — something I physically could not tune out.
 
-## The Solution
+So I built this. I set the notification sound to a chicken screaming.
 
-A chicken. Screaming. From your speakers.
+It sounds ridiculous. It works completely. The moment my AI finishes, a chicken screams from my speakers. I've never once missed it. My response time went from "whenever I wander back" to "within seconds." That single change genuinely skyrocketed my throughput — more prompts per hour, tighter feedback loops, less context lost between sessions.
 
-ChickenHook wires a genuine screaming chicken sound into your AI coding tools. When your AI finishes or needs your attention, a chicken screams at you until you come back to the keyboard.
-
-You cannot ignore a chicken.
-
-## Value Add
-
-Your AI works at 1000x human speed. You scroll Douyin at 0.001x. ChickenHook bridges the gap. Every minute the AI waits is a minute you spent watching a guy trip over a cat.
+ChickenHook automates the whole setup. One command and your AI tools — Claude Code, Gemini CLI, Aider, Codex, Coco — all scream a chicken at you when they're done.
 
 ---
 
@@ -34,7 +28,7 @@ Your AI works at 1000x human speed. You scroll Douyin at 0.001x. ChickenHook bri
 
 | Without ChickenHook | With ChickenHook |
 |---|---|
-| ![uncanny](assets/mr-incredible-uncanny.png) | ![canny](assets/mr-incredible-canny.jpg) |
+| <img src="assets/mr-incredible-uncanny.png" width="240"/> | <img src="assets/mr-incredible-canny.jpg" width="240"/> |
 | AI finished 40 minutes ago. You're still on Douyin. | Chicken screamed at 31 seconds. You came back. |
 | It wrote 200 files while you were asleep. It had no stop condition. | You did not sleep. The chicken had opinions about that. |
 | "I don't know what I'm building anymore." | Sir. The chicken called you back 4 minutes in. |
