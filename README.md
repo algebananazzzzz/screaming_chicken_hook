@@ -2,23 +2,27 @@
 
 ![Chicken Screaming on Tree](assets/chicken-screaming.jpg)
 
-> _I spent 3% of my Claude Max 20x subscription building this instead of literally anything else. You're welcome. Please star the repo ;)._
+> _I spent 3% of my Claude Max 20x subscription building this instead of literally anything else. Please star the repo if you enjoy the hook :))._
 
 ---
 
 ## The Story
 
-I'm a 10x AI Vibe Engineer — I haven't touched real code in months, and honestly I'm at peace with that. My setup is Ghostty running multiple Claude, Codex, and Coco sessions across tabs and windows simultaneously. Different models for different tasks, all running in parallel. It's a good system.
+I would consider myself a very aggressive vibe coder. I run Ghostty with multiple Claude, Codex, and Coco sessions going simultaneously across tabs and windows — different models, different tasks, all in parallel. Ever since I set it up this way, my productivity genuinely skyrocketed.
 
-The problem is keeping track of when any of them actually finish.
+However, I have a very bad habit.
 
-I'll fire off a prompt, jump to another tab to start something else, and somewhere along the way I drift — Douyin, Instagram reels, or just falling asleep. One reel turns into fifty. And every one of those sessions is just sitting there, done, waiting for me to type the next thing. Dead time I didn't even know I was losing.
+I fire a prompt, and then what do I do while I wait? Open Douyin. IG reels. Or just fall asleep. And even when I actually see a session finish, I still procrastinate — "one more reel" becomes fifty more. I can feel myself getting stupider with every scroll.
 
-I tried setting up notifications. The default Mac notification sound does nothing for me — it's too gentle, completely ignorable when you're in a reels spiral or half-asleep. I needed something that would actually make me stop.
+I tried Ghostty's notifications, Claude's built-in sounds. They do nothing for me. Too gentle. Too easy to ignore when you're already three reels deep or half-asleep.
 
-Then I saw someone post a DJ remix of the screaming chicken on my feed, and something clicked. Pure, unignorable sigma energy. I set it as my notification sound immediately.
+Then I saw someone on my feed recommend using the screaming chicken DJ remix as an alarm clock. I genuinely wanted to do it — but I'm in a dorm. That's not a conversation I'm ready to have with my roommates at 3am.
 
-That single change skyrocketed my throughput. The chicken doesn't negotiate. You cannot "just one more reel" when a chicken is screaming through your speakers. ChickenHook automates the whole setup so you don't have to figure it out yourself.
+But for my AI sessions? Absolutely.
+
+The moment I set it up, something changed. Every time that scream hits, something jolts in me — brain goes into overclock mode. There's something about visualising that chicken, sigma enough to stop crossing roads and just stand on a tree screaming, that makes me drop the phone and get back to work. The dead time basically disappeared.
+
+ChickenHook automates the whole setup so you don't have to figure it out yourself.
 
 ---
 
@@ -89,16 +93,3 @@ Or:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/algebananazzzzz/screaming_chicken_hook/main/uninstall.sh | bash
 ```
-
----
-
-### Coco-only
-
-This repo is a valid Coco Plugin. If you only use Coco:
-
-```bash
-brew install terminal-notifier
-coco plugin install --type=github algebananazzzzz/screaming_chicken_hook
-```
-
-The chicken copies itself to `~/Library/Sounds/` on first hook fire.
