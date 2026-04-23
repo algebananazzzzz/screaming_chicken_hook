@@ -87,7 +87,7 @@ if [[ -f "$CODEX_TOML" ]] || command -v codex &>/dev/null; then
   TOOLS+=("Codex CLI")
   ok "Codex CLI detected"
 fi
-if [[ -f "$COCO_CFG" ]]; then
+if command -v coco &>/dev/null || [[ -f "$COCO_CFG" ]]; then
   TOOLS+=("Coco")
   ok "Coco detected"
 fi
@@ -377,13 +377,15 @@ JSON
   fi
 }
 
-configure_coco() {
-  header "Coco"
+_coco_edit_yaml() {
+  if [[ ! -f "$COCO_CFG" ]]; then
+    skip "coco.yaml not found, skipping direct config"
+    return
+  fi
   if grep -q "\-sound chicken" "$COCO_CFG" 2>/dev/null; then
     skip "Coco already configured"
     return
   fi
-
   cat >> "$COCO_CFG" <<YAML
 
 hooks:
@@ -397,7 +399,22 @@ hooks:
       - event: stop
       - event: subagent_stop
 YAML
-  ok "Coco configured"
+  ok "Coco yaml configured"
+}
+
+configure_coco() {
+  header "Coco"
+  if command -v coco &>/dev/null; then
+    info "Installing as Coco Plugin..."
+    if coco plugin install --type=github algebananazzzzz/screaming_chicken_hook --yes 2>&1; then
+      ok "Coco Plugin installed — restart Coco to activate"
+    else
+      info "Plugin install failed, falling back to direct yaml edit..."
+      _coco_edit_yaml
+    fi
+  else
+    _coco_edit_yaml
+  fi
 }
 
 # ── 7. run configuration ──────────────────────────────────────────────────────

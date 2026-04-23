@@ -1,0 +1,19 @@
+# ChickenHook — Coco Plugin
+# Installs screaming chicken notifications for Coco AI coding tool.
+#
+# Install:
+#   coco plugin install --type=github algebananazzzzz/screaming_chicken_hook
+#
+# On first hook fire, chicken.aiff is auto-copied to ~/Library/Sounds/.
+# Requires: terminal-notifier (brew install terminal-notifier)
+
+hooks:
+  - type: command
+    command: 'cp -n "${COCO_PLUGIN_ROOT}/chicken.aiff" ~/Library/Sounds/chicken.aiff 2>/dev/null; /opt/homebrew/bin/terminal-notifier -message "Coco finished" -title "Coco" -sound chicken'
+    matchers:
+      - event: stop
+      - event: subagent_stop
+  - type: command
+    command: '/opt/homebrew/bin/terminal-notifier -message "Coco needs your attention" -title "Coco" -sound chicken'
+    matchers:
+      - event: notification

@@ -44,7 +44,7 @@ ROI: every minute the AI waits is a minute of your life you spent watching a guy
 | Gemini CLI | `~/.gemini/settings.json` |
 | Aider | `~/.aider.conf.yml` |
 | Codex CLI | `~/.codex/config.toml` + `hooks.json` |
-| Coco | `~/Library/Application Support/coco/coco.yaml` |
+| Coco | Plugin install via `coco plugin install` |
 
 Safe to run multiple times — idempotent, non-destructive to existing config.
 
@@ -70,3 +70,15 @@ cd screaming_chicken_hook
 ```
 
 That's it. Go write a prompt. Then go touch grass. The chicken will call you back.
+
+### Coco-only install
+
+This repo is also a valid Coco Plugin. If you only use Coco, skip the one-liner and run:
+
+```bash
+# Install terminal-notifier first
+brew install terminal-notifier
+
+# Install as Coco Plugin (auto-copies chicken.aiff on first hook fire)
+coco plugin install --type=github algebananazzzzz/screaming_chicken_hook
+```
