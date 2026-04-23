@@ -12,8 +12,28 @@ Single-file installer (`setup.sh`) that configures a chicken sound notification 
 ```
 ChickenHook/
 ├── chicken.aiff        # bundled notification sound
-└── setup.sh            # installer script
+├── setup.sh            # installer script
+└── README.md           # funny explainer with meme
 ```
+
+## README
+
+Funny, short README explaining the problem and solution. Tone: dry humor, relatable dev pain.
+
+**Problem statement:** Claude Code and Coco finish tasks silently. Even with notifications configured, you're so deep in flow you don't notice. You come back 10 minutes later and the AI has been waiting idle.
+
+**Solution:** A chicken screaming on your roof. Literally impossible to ignore.
+
+**Meme reference:** "Chicken Screaming on Tree" meme (Know Your Meme, Nov 2025).  
+Image: `https://i.kym-cdn.com/entries/icons/original/000/056/069/chickencover_.jpg`  
+Source page: https://knowyourmeme.com/memes/chicken-screaming-on-tree
+
+README structure:
+1. Meme image embedded at top
+2. One-liner pitch
+3. What it does (bullet: installs sound, configures Claude + Coco)
+4. Install: `git clone ... && cd ChickenHook && ./setup.sh`
+5. Requirements: macOS, homebrew (auto-installed if missing)
 
 ## Setup Script Flow
 
