@@ -8,19 +8,17 @@
 
 ## The Story
 
-If you're anything like me, you haven't touched code in months. I'm a self-proclaimed 10x AI Vibe Engineer — I describe what I want, my AI builds it, I review, repeat. The AI is the engineering team. I'm the CEO of Prompts. It works surprisingly well, until it doesn't.
+I run Ghostty with sessions spread across multiple tabs and windows. I'm a 10x AI Vibe Engineer — I haven't touched real code in months. Fire a prompt, AI does the work, I review and repeat. It compounds fast.
 
-The problem is the gap between when the AI finishes and when I actually notice.
+The problem: I can never tell when a session finishes. I send a prompt, switch to another tab, open Douyin or IG reels "for a second" — and one reel becomes fifty. Or I just fall asleep. By the time I come back, the AI has been sitting idle for 30 minutes waiting for a single keystroke. That dead time adds up. A lot.
 
-I'd fire off a prompt, then drift — check Douyin, grab water, get pulled into something else. The AI would finish in 30 seconds and just... wait. Blinking cursor. Infinite patience. And I'd come back 40 minutes later wondering why my session felt slow. The answer was always me.
+I tried configuring notifications. The Mac default sound is too soft, too easy to tune out. It doesn't cut through reels audio. It doesn't wake you up.
 
-I tried the built-in Mac notification sound. It's too soft. Too polite. It blends into background noise and I've trained myself to ignore it without even realising. I needed something that would cut through — something I physically could not tune out.
+Then I saw someone post a DJ remix of the screaming chicken on my feed. Pure sigma energy. Unignorable. I immediately knew.
 
-So I built this. I set the notification sound to a chicken screaming.
+I set it as my notification sound. That one change genuinely skyrocketed my throughput. The chicken does not let you procrastinate. You cannot "one more reel" when a chicken is screaming at you.
 
-It sounds ridiculous. It works completely. The moment my AI finishes, a chicken screams from my speakers. I've never once missed it. My response time went from "whenever I wander back" to "within seconds." That single change genuinely skyrocketed my throughput — more prompts per hour, tighter feedback loops, less context lost between sessions.
-
-ChickenHook automates the whole setup. One command and your AI tools — Claude Code, Gemini CLI, Aider, Codex, Coco — all scream a chicken at you when they're done.
+ChickenHook automates the full setup — one command, and your AI tools all scream a chicken when they're done.
 
 ---
 
