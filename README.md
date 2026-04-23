@@ -31,48 +31,46 @@ ChickenHook automates the whole setup so you don't have to figure it out yoursel
 | Without ChickenHook | With ChickenHook |
 |---|---|
 | <img src="assets/mr-incredible-uncanny.png" width="240"/> | <img src="assets/mr-incredible-canny.jpg" width="240"/> |
-| AI finished 40 minutes ago. You're still on Douyin. | Chicken screamed at 31 seconds. You came back. |
-| It wrote 200 files while you were asleep. It had no stop condition. | You did not sleep. The chicken had opinions about that. |
-| "I don't know what I'm building anymore." | Sir. The chicken called you back 4 minutes in. |
+| Session finished 40 minutes ago. You're still on Douyin. You didn't notice. | The chicken screamed. You came back within seconds. The cursor had company. |
+| You fell asleep. The AI kept going. It wrote 200 files you didn't ask for. | You didn't fall asleep. The chicken had something to say about that. |
+| "I genuinely don't know what I'm building anymore." | You were never gone long enough to lose the thread. |
 
 ---
 
 ## What It Does
 
-- Installs `terminal-notifier` and `gum` via Homebrew automatically
-- Downloads `chicken.aiff` → `~/Library/Sounds/`
-- Detects which AI tools you have installed
-- Interactive TUI to choose which tools to configure
-- Wires the chicken into each selected tool
+It's one script. Run it, pick which AI tools you want wired up, and that's it. It installs the chicken sound to the right place on your Mac, hooks it into your notification system, and configures each tool to scream at you when it's done or needs your attention.
 
-### Supported Tools
+Supported tools:
 
-| Tool | Config |
-|------|--------|
+| Tool | How it's configured |
+|------|---------------------|
 | Claude Code | `~/.claude/settings.json` — Notification + Stop hooks |
 | Gemini CLI | `~/.gemini/settings.json` — Notification + AfterAgent hooks |
 | Aider | `~/.aider.conf.yml` — notifications_command |
 | Codex CLI | `~/.codex/config.toml` + `hooks.json` — notify + Stop |
-| Coco | Plugin install via `coco plugin install` |
+| Coco | Installed as a Coco Plugin via `coco plugin install` |
 
-Safe to run multiple times — idempotent, won't break existing config.
+Safe to run more than once — it won't double-up or break anything that's already configured.
 
 ---
 
 ## Requirements
 
 - macOS
-- [Homebrew](https://brew.sh) — everything else installs automatically
+- [Homebrew](https://brew.sh) — the script handles everything else automatically
 
 ---
 
 ## Install
 
+One line. That's it.
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/algebananazzzzz/screaming_chicken_hook/main/install.sh | bash
 ```
 
-Or clone and run:
+Or if you'd rather clone it first:
 
 ```bash
 git clone git@github.com:algebananazzzzz/screaming_chicken_hook.git
@@ -84,6 +82,8 @@ cd screaming_chicken_hook
 
 ## Uninstall
 
+If for some reason you want the silence back:
+
 ```bash
 ./uninstall.sh
 ```
@@ -93,3 +93,16 @@ Or:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/algebananazzzzz/screaming_chicken_hook/main/uninstall.sh | bash
 ```
+
+---
+
+### Coco-only
+
+This repo is also a valid Coco Plugin, so if you only use Coco you can skip the script entirely:
+
+```bash
+brew install terminal-notifier
+coco plugin install --type=github algebananazzzzz/screaming_chicken_hook
+```
+
+The chicken copies itself into `~/Library/Sounds/` the first time a hook fires.
