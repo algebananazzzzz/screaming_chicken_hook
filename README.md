@@ -8,17 +8,17 @@
 
 ## The Story
 
-I run Ghostty with sessions spread across multiple tabs and windows. I'm a 10x AI Vibe Engineer — I haven't touched real code in months. Fire a prompt, AI does the work, I review and repeat. It compounds fast.
+I'm a 10x AI Vibe Engineer — I haven't touched real code in months, and honestly I'm at peace with that. My setup is Ghostty running multiple Claude, Codex, and Coco sessions across tabs and windows simultaneously. Different models for different tasks, all running in parallel. It's a good system.
 
-The problem: I can never tell when a session finishes. I send a prompt, switch to another tab, open Douyin or IG reels "for a second" — and one reel becomes fifty. Or I just fall asleep. By the time I come back, the AI has been sitting idle for 30 minutes waiting for a single keystroke. That dead time adds up. A lot.
+The problem is keeping track of when any of them actually finish.
 
-I tried configuring notifications. The Mac default sound is too soft, too easy to tune out. It doesn't cut through reels audio. It doesn't wake you up.
+I'll fire off a prompt, jump to another tab to start something else, and somewhere along the way I drift — Douyin, Instagram reels, or just falling asleep. One reel turns into fifty. And every one of those sessions is just sitting there, done, waiting for me to type the next thing. Dead time I didn't even know I was losing.
 
-Then I saw someone post a DJ remix of the screaming chicken on my feed. Pure sigma energy. Unignorable. I immediately knew.
+I tried setting up notifications. The default Mac notification sound does nothing for me — it's too gentle, completely ignorable when you're in a reels spiral or half-asleep. I needed something that would actually make me stop.
 
-I set it as my notification sound. That one change genuinely skyrocketed my throughput. The chicken does not let you procrastinate. You cannot "one more reel" when a chicken is screaming at you.
+Then I saw someone post a DJ remix of the screaming chicken on my feed, and something clicked. Pure, unignorable sigma energy. I set it as my notification sound immediately.
 
-ChickenHook automates the full setup — one command, and your AI tools all scream a chicken when they're done.
+That single change skyrocketed my throughput. The chicken doesn't negotiate. You cannot "just one more reel" when a chicken is screaming through your speakers. ChickenHook automates the whole setup so you don't have to figure it out yourself.
 
 ---
 
