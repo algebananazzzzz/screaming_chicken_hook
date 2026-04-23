@@ -40,13 +40,62 @@ ROI: every minute the AI waits is a minute of your life you spent watching a guy
 
 *([Mr. Incredible Becoming Uncanny](https://knowyourmeme.com/memes/mr-incredible-becoming-uncanny) — a 1:1 accurate representation of your session)*
 
-| Phase | 😊 → 💀 Without ChickenHook | 🐔 With ChickenHook |
-|:-----:|------------------------------|----------------------|
-| 1 😊 | "I'll let the AI cook while I check Douyin for a sec." | Chicken screams. You are already back. |
-| 2 😐 | "It's been 20 minutes. Is it still going?" | This question was never asked. |
-| 3 😟 | "Oh. It finished 40 minutes ago. It's been waiting." | This sentence does not exist in this timeline. |
-| 4 😨 | "I fell asleep. It wrote 200 files I didn't ask for." | You did not fall asleep. The chicken had opinions. |
-| 5 💀 | "I don't know what I'm building anymore." | Sir, the chicken called you back immediately. Please write a prompt. |
+<table>
+<tr>
+<th align="center" width="50%">😵 Without ChickenHook</th>
+<th align="center" width="50%">😊 With ChickenHook</th>
+</tr>
+<tr>
+<td align="center"><img src="https://i.imgflip.com/2/5z2ywc.jpg" width="220"/></td>
+<td align="center"><img src="https://i.imgflip.com/2/5zvk7e.jpg" width="220"/></td>
+</tr>
+<tr>
+<td>
+
+**"I'll just check Douyin for a sec while it runs."**
+
+It's been 47 minutes. Your AI finished in 30 seconds. It has been waiting in silence, blinking cursor, fully prepared to continue, deeply unbothered, deeply unjudgemental, but you should judge yourself.
+
+</td>
+<td>
+
+**The chicken screamed. You came back.**
+
+It has been 31 seconds. The cursor blinks. You are here. The AI continues. The loop is closed. The velocity is maintained. You are, for once, not the bottleneck.
+
+</td>
+</tr>
+<tr>
+<td>
+
+**"Oh. It wrote 200 files I didn't ask for."**
+
+You fell asleep. Or you watched a man trip over a cat 6 times. Either way, the AI kept going. It has no stop condition when you are not there. It is a very enthusiastic intern.
+
+</td>
+<td>
+
+**You did not fall asleep.**
+
+The chicken had opinions about that. Loudly. At volume. From your speakers. Your neighbours now also know when your AI finishes. This is a feature.
+
+</td>
+</tr>
+<tr>
+<td>
+
+**"I don't know what I'm building anymore."**
+
+</td>
+<td>
+
+**Sir, the chicken called you back 4 minutes in.**
+
+Please write a prompt.
+
+</td>
+</tr>
+</table>
 
 ---
 
