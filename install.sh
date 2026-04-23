@@ -15,44 +15,70 @@ CODEX_TOML="$HOME/.codex/config.toml"
 CODEX_HOOKS="$HOME/.codex/hooks.json"
 COCO_CFG="$HOME/Library/Application Support/coco/coco.yaml"
 
-# ── helpers ──────────────────────────────────────────────────────────────────
-ok()   { echo "  ✓ $*"; }
-info() { echo "  → $*"; }
-skip() { echo "  ~ $*"; }
-err()  { echo "✗ $*" >&2; exit 1; }
-header() { echo ""; echo "━━ $* ━━"; }
+# ━━ Phase 1: bootstrap (plain — gum not yet available) ━━━━━━━━━━━━━━━━━━━━━━━
 
-# ── 0. macOS only ─────────────────────────────────────────────────────────────
-[[ "$(uname)" == "Darwin" ]] || err "ChickenHook requires macOS."
+[[ "$(uname)" == "Darwin" ]] || { echo "✗ ChickenHook requires macOS."; exit 1; }
+command -v brew &>/dev/null    || { echo "✗ Homebrew required. Install: https://brew.sh"; exit 1; }
 
-# ── 1. Homebrew ───────────────────────────────────────────────────────────────
-header "Prerequisites"
-command -v brew &>/dev/null || err "Homebrew not found. Install: https://brew.sh"
-ok "Homebrew found"
+if ! command -v gum &>/dev/null; then
+  echo "  → Installing gum (Charm TUI)..."
+  brew install gum >/dev/null 2>&1 || { echo "✗ brew install gum failed"; exit 1; }
+  echo "  ✓ gum installed"
+fi
 
-# ── 2. terminal-notifier ──────────────────────────────────────────────────────
+# ━━ Phase 2: styled output ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ── colours ──────────────────────────────────────────────────────────────────
+C_ORANGE=214   # primary / accent
+C_GREEN=82     # success
+C_BLUE=75      # info
+C_YELLOW=220   # skip / warn
+C_RED=196      # error
+C_GRAY=242     # muted
+
+ok()      { gum style --foreground $C_GREEN  "  ✓  $*"; }
+info()    { gum style --foreground $C_BLUE   "  ›  $*"; }
+skip()    { gum style --foreground $C_YELLOW "  ~  $*"; }
+muted()   { gum style --foreground $C_GRAY   "      $*"; }
+err()     { gum style --foreground $C_RED    "  ✗  $*" >&2; exit 1; }
+section() {
+  echo ""
+  gum style \
+    --foreground $C_ORANGE --bold \
+    "  ◆  $*"
+  gum style --foreground $C_GRAY "     $(printf '─%.0s' {1..44})"
+}
+
+# ── banner ───────────────────────────────────────────────────────────────────
+gum style \
+  --foreground $C_ORANGE --border-foreground $C_ORANGE --border double \
+  --align center --width 54 --margin "1 2" --padding "1 2" \
+  "🐔   C H I C K E N H O O K   🐔" \
+  "" \
+  "Screaming chicken notifications" \
+  "for your AI coding tools."
+
+# ━━ Prerequisites ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+section "Prerequisites"
+
+# terminal-notifier
 if command -v terminal-notifier &>/dev/null; then
   ok "terminal-notifier already installed"
 else
-  info "Installing terminal-notifier..."
-  brew install terminal-notifier || err "brew install terminal-notifier failed"
+  gum spin --spinner dot \
+    --title "$(gum style --foreground $C_BLUE "  Installing terminal-notifier...")" \
+    --show-error \
+    -- brew install terminal-notifier \
+    || err "brew install terminal-notifier failed"
   ok "terminal-notifier installed"
 fi
 
-# ── 3. gum (Charm TUI) ────────────────────────────────────────────────────────
-if command -v gum &>/dev/null; then
-  ok "gum already installed"
-else
-  info "Installing gum..."
-  brew install gum || err "brew install gum failed"
-  ok "gum installed"
-fi
+ok "gum ready"
 
-# ── 4. chicken.aiff ───────────────────────────────────────────────────────────
-header "Sound"
+# ━━ Sound ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+section "Sound"
 mkdir -p "$HOME/Library/Sounds"
 
-# Use local file if running from cloned repo, else download
 SCRIPT_DIR=""
 if [[ -n "${BASH_SOURCE[0]:-}" && "${BASH_SOURCE[0]}" != "bash" ]]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)" || true
@@ -60,66 +86,83 @@ fi
 
 if [[ -n "$SCRIPT_DIR" && -f "$SCRIPT_DIR/chicken.aiff" ]]; then
   cp "$SCRIPT_DIR/chicken.aiff" "$SOUND_DST"
-  ok "chicken.aiff copied from local repo"
+  ok "chicken.aiff → ~/Library/Sounds/ (local)"
 else
-  info "Downloading chicken.aiff..."
-  curl -fsSL "$REPO_RAW/chicken.aiff" -o "$SOUND_DST" || err "Failed to download chicken.aiff"
-  ok "chicken.aiff downloaded → ~/Library/Sounds/"
+  gum spin --spinner dot \
+    --title "$(gum style --foreground $C_BLUE "  Downloading chicken.aiff...")" \
+    --show-error \
+    -- curl -fsSL "$REPO_RAW/chicken.aiff" -o "$SOUND_DST" \
+    || err "Failed to download chicken.aiff"
+  ok "chicken.aiff → ~/Library/Sounds/"
 fi
 
-# ── 5. detect installed tools ─────────────────────────────────────────────────
-header "Detecting AI tools"
+# ━━ Detect AI tools ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+section "Detecting AI tools"
 TOOLS=()
 
-if [[ -f "$CLAUDE_CFG" ]] || command -v claude &>/dev/null; then
-  TOOLS+=("Claude Code")
-  ok "Claude Code detected"
-fi
-if [[ -f "$GEMINI_CFG" ]] || command -v gemini &>/dev/null; then
-  TOOLS+=("Gemini CLI")
-  ok "Gemini CLI detected"
-fi
-if [[ -f "$AIDER_CFG" ]] || command -v aider &>/dev/null; then
-  TOOLS+=("Aider")
-  ok "Aider detected"
-fi
-if [[ -f "$CODEX_TOML" ]] || command -v codex &>/dev/null; then
-  TOOLS+=("Codex CLI")
-  ok "Codex CLI detected"
-fi
+_detect() {
+  local name="$1" cfg="$2" cmd="$3"
+  if [[ -f "$cfg" ]] || command -v "$cmd" &>/dev/null 2>&1; then
+    TOOLS+=("$name")
+    ok "$name"
+  else
+    muted "$name — not found"
+  fi
+}
+
+_detect "Claude Code" "$CLAUDE_CFG"  "claude"
+_detect "Gemini CLI"  "$GEMINI_CFG"  "gemini"
+_detect "Aider"       "$AIDER_CFG"   "aider"
+_detect "Codex CLI"   "$CODEX_TOML"  "codex"
+
+# Coco: check command OR config
 if command -v coco &>/dev/null || [[ -f "$COCO_CFG" ]]; then
   TOOLS+=("Coco")
-  ok "Coco detected"
+  ok "Coco"
+else
+  muted "Coco — not found"
 fi
 
 if [[ ${#TOOLS[@]} -eq 0 ]]; then
   echo ""
-  echo "No AI tools detected. Install Claude Code, Gemini CLI, Aider, Codex CLI, or Coco first."
+  gum style \
+    --foreground $C_YELLOW --border-foreground $C_YELLOW --border rounded \
+    --align center --width 54 --margin "1 2" --padding "1 2" \
+    "No AI tools detected." \
+    "" \
+    "Install Claude Code, Gemini CLI, Aider," \
+    "Codex CLI, or Coco first."
   exit 0
 fi
 
-# ── 6. interactive selection ──────────────────────────────────────────────────
-header "Select tools to configure"
-echo "  (space = select, enter = confirm)"
+# ━━ Select tools ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 echo ""
-
 SELECTED=$(gum choose --no-limit \
-  --header "🐔 Which tools should the chicken watch over?" \
-  --selected.foreground="212" \
-  --cursor.foreground="212" \
-  "${TOOLS[@]}" </dev/tty) || { echo "Nothing selected. Exiting."; exit 0; }
+  --header "$(gum style --foreground $C_ORANGE --bold "  🐔  Which tools should the chicken watch over?")" \
+  --cursor-prefix "  • " \
+  --selected-prefix "  ✓ " \
+  --unselected-prefix "  • " \
+  --selected.foreground="$C_ORANGE" \
+  --cursor.foreground="$C_ORANGE" \
+  --selected="*" \
+  "${TOOLS[@]}" </dev/tty) || true
 
-[[ -z "$SELECTED" ]] && { echo "Nothing selected. Exiting."; exit 0; }
+if [[ -z "$SELECTED" ]]; then
+  gum style --foreground $C_YELLOW "  Nothing selected. Exiting."
+  exit 0
+fi
 
-# ── configure functions ───────────────────────────────────────────────────────
+# ━━ Configure functions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 configure_claude() {
-  header "Claude Code"
-  command -v python3 &>/dev/null || err "python3 required for JSON config merging"
+  section "Claude Code"
+  command -v python3 &>/dev/null || err "python3 required for JSON merging"
   mkdir -p "$(dirname "$CLAUDE_CFG")"
   [[ -f "$CLAUDE_CFG" ]] || echo '{}' > "$CLAUDE_CFG"
 
-  python3 - "$CLAUDE_CFG" <<'PYEOF'
+  gum spin --spinner dot \
+    --title "$(gum style --foreground $C_BLUE "  Configuring ~/.claude/settings.json...")" \
+    -- python3 - "$CLAUDE_CFG" <<'PYEOF'
 import sys, json
 
 path = sys.argv[1]
@@ -127,7 +170,7 @@ try:
     with open(path, 'r') as f:
         cfg = json.load(f)
 except (json.JSONDecodeError, ValueError) as e:
-    print(f"✗ Failed to parse {path}: {e}", file=sys.stderr)
+    print(f"Failed to parse {path}: {e}", file=sys.stderr)
     sys.exit(1)
 
 notifier = "/opt/homebrew/bin/terminal-notifier"
@@ -159,17 +202,21 @@ if not has_chicken(stop):
 
 with open(path, 'w') as f:
     json.dump(cfg, f, indent=2)
-print("  ✓ Claude Code configured")
 PYEOF
+
+  ok "Claude Code configured"
+  muted "~/.claude/settings.json → Notification + Stop hooks"
 }
 
 configure_gemini() {
-  header "Gemini CLI"
-  command -v python3 &>/dev/null || err "python3 required for JSON config merging"
+  section "Gemini CLI"
+  command -v python3 &>/dev/null || err "python3 required for JSON merging"
   mkdir -p "$HOME/.gemini"
   [[ -f "$GEMINI_CFG" ]] || echo '{}' > "$GEMINI_CFG"
 
-  python3 - "$GEMINI_CFG" <<'PYEOF'
+  gum spin --spinner dot \
+    --title "$(gum style --foreground $C_BLUE "  Configuring ~/.gemini/settings.json...")" \
+    -- python3 - "$GEMINI_CFG" <<'PYEOF'
 import sys, json
 
 path = sys.argv[1]
@@ -177,7 +224,7 @@ try:
     with open(path, 'r') as f:
         cfg = json.load(f)
 except (json.JSONDecodeError, ValueError) as e:
-    print(f"✗ Failed to parse {path}: {e}", file=sys.stderr)
+    print(f"Failed to parse {path}: {e}", file=sys.stderr)
     sys.exit(1)
 
 notifier = "/opt/homebrew/bin/terminal-notifier"
@@ -209,34 +256,34 @@ if not has_chicken(after):
 
 with open(path, 'w') as f:
     json.dump(cfg, f, indent=2)
-print("  ✓ Gemini CLI configured")
 PYEOF
+
+  ok "Gemini CLI configured"
+  muted "~/.gemini/settings.json → Notification + AfterAgent hooks"
 }
 
 configure_aider() {
-  header "Aider"
+  section "Aider"
   local notif_cmd="$NOTIFIER -message 'Aider finished' -title 'Aider' -sound chicken"
 
   if [[ -f "$AIDER_CFG" ]]; then
+    if grep -q "\-sound chicken" "$AIDER_CFG" 2>/dev/null; then
+      skip "Aider already configured"
+      return
+    fi
     if grep -q "notifications_command" "$AIDER_CFG" 2>/dev/null; then
-      if grep -q "\-sound chicken" "$AIDER_CFG" 2>/dev/null; then
-        skip "Aider already configured"
-        return
-      fi
-      # Replace existing notifications_command line
       python3 -c "
-import re, sys
+import re
 path = '$AIDER_CFG'
-cmd = '$notif_cmd'
+cmd  = '$notif_cmd'
 with open(path, 'r') as f:
     content = f.read()
 content = re.sub(r'^notifications_command:.*$', f'notifications_command: \"{cmd}\"', content, flags=re.MULTILINE)
 with open(path, 'w') as f:
     f.write(content)
-print('  ✓ Aider notifications_command updated')
 "
+      ok "Aider notifications_command updated"
     else
-      # Append to existing file
       cat >> "$AIDER_CFG" <<YAML
 
 # ChickenHook
@@ -246,22 +293,21 @@ YAML
       ok "Aider configured"
     fi
   else
-    # Create new config
     cat > "$AIDER_CFG" <<YAML
 # ChickenHook
 notifications: true
 notifications_command: "$notif_cmd"
 YAML
-    ok "Aider configured (created ~/.aider.conf.yml)"
+    ok "Aider configured"
   fi
+  muted "~/.aider.conf.yml → notifications_command"
 }
 
 configure_codex() {
-  header "Codex CLI"
+  section "Codex CLI"
   command -v python3 &>/dev/null || err "python3 required"
   mkdir -p "$HOME/.codex"
 
-  # config.toml — enable hooks feature + notify command
   if [[ ! -f "$CODEX_TOML" ]]; then
     cat > "$CODEX_TOML" <<TOML
 [features]
@@ -271,7 +317,9 @@ notify = ["$NOTIFIER", "-message", "Codex finished", "-title", "Codex CLI", "-so
 TOML
     ok "Codex config.toml created"
   else
-    python3 - "$CODEX_TOML" <<'PYEOF'
+    gum spin --spinner dot \
+      --title "$(gum style --foreground $C_BLUE "  Configuring ~/.codex/config.toml...")" \
+      -- python3 - "$CODEX_TOML" <<'PYEOF'
 import sys, re
 
 path = sys.argv[1]
@@ -295,15 +343,14 @@ if 'notify' not in content:
 if changed:
     with open(path, 'w') as f:
         f.write(content)
-    print("  ✓ Codex config.toml updated")
-else:
-    print("  ~ Codex config.toml already configured")
 PYEOF
+    ok "Codex config.toml updated"
   fi
 
-  # hooks.json — Stop + Notification events
   if [[ -f "$CODEX_HOOKS" ]]; then
-    python3 - "$CODEX_HOOKS" <<'PYEOF'
+    gum spin --spinner dot \
+      --title "$(gum style --foreground $C_BLUE "  Configuring ~/.codex/hooks.json...")" \
+      -- python3 - "$CODEX_HOOKS" <<'PYEOF'
 import sys, json
 
 path = sys.argv[1]
@@ -342,39 +389,20 @@ if not has_chicken(notif):
 
 with open(path, 'w') as f:
     json.dump(cfg, f, indent=2)
-print("  ✓ Codex hooks.json updated")
 PYEOF
+    ok "Codex hooks.json updated"
   else
     cat > "$CODEX_HOOKS" <<JSON
 {
   "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$NOTIFIER -message \"Codex finished\" -title \"Codex CLI\" -sound chicken",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$NOTIFIER -message \"Codex needs your attention\" -title \"Codex CLI\" -sound chicken",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
+    "Stop": [{"hooks": [{"type": "command", "command": "$NOTIFIER -message \"Codex finished\" -title \"Codex CLI\" -sound chicken", "timeout": 10}]}],
+    "Notification": [{"hooks": [{"type": "command", "command": "$NOTIFIER -message \"Codex needs your attention\" -title \"Codex CLI\" -sound chicken", "timeout": 10}]}]
   }
 }
 JSON
     ok "Codex hooks.json created"
   fi
+  muted "~/.codex/config.toml + hooks.json → Stop + Notification"
 }
 
 _coco_edit_yaml() {
@@ -400,36 +428,47 @@ hooks:
       - event: subagent_stop
 YAML
   ok "Coco yaml configured"
+  muted "~/Library/Application Support/coco/coco.yaml"
 }
 
 configure_coco() {
-  header "Coco"
+  section "Coco"
   if command -v coco &>/dev/null; then
-    info "Installing as Coco Plugin..."
-    if coco plugin install --type=github algebananazzzzz/screaming_chicken_hook --yes 2>&1; then
-      ok "Coco Plugin installed — restart Coco to activate"
-    else
+    gum spin --spinner dot \
+      --title "$(gum style --foreground $C_BLUE "  Installing ChickenHook as Coco Plugin...")" \
+      --show-error \
+      -- coco plugin install --type=github algebananazzzzz/screaming_chicken_hook --yes \
+    && {
+      ok "Coco Plugin installed"
+      muted "Restart Coco to activate"
+    } || {
       info "Plugin install failed, falling back to direct yaml edit..."
       _coco_edit_yaml
-    fi
+    }
   else
     _coco_edit_yaml
   fi
 }
 
-# ── 7. run configuration ──────────────────────────────────────────────────────
+# ━━ Run ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 while IFS= read -r tool; do
   case "$tool" in
     "Claude Code") configure_claude ;;
     "Gemini CLI")  configure_gemini ;;
-    "Aider")       configure_aider ;;
-    "Codex CLI")   configure_codex ;;
-    "Coco")        configure_coco ;;
+    "Aider")       configure_aider  ;;
+    "Codex CLI")   configure_codex  ;;
+    "Coco")        configure_coco   ;;
   esac
 done <<< "$SELECTED"
 
-# ── done ─────────────────────────────────────────────────────────────────────
+# ━━ Done ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 echo ""
-echo "🐔 ChickenHook setup complete!"
-echo "   The chicken watches over you now. Go touch grass. It'll call you back."
+gum style \
+  --foreground $C_GREEN --border-foreground $C_GREEN --border rounded \
+  --align center --width 54 --margin "1 2" --padding "1 2" \
+  "🐔   Setup Complete!   🐔" \
+  "" \
+  "The chicken watches over you now." \
+  "Go touch grass. It'll call you back."
 echo ""
